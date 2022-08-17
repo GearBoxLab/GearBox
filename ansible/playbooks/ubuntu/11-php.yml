@@ -1,0 +1,135 @@
+---
+- name: Install PHP and extensions
+  hosts: localhost
+  become: true
+  vars:
+    support_php_versions: [ "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1" ]
+  tasks:
+    - name: Add phpvm command to switch PHP versions
+      copy:
+        content: '{{ script }}'
+        dest: /usr/local/bin/phpvm
+        mode: '+x'
+      vars:
+        script: |
+          #!/bin/bash
+          
+          case $1 in
+            use)
+              if [ "$2" != "" ]
+              then
+                sudo update-alternatives --set php /usr/bin/php$2
+                sudo update-alternatives --set phar /usr/bin/phar$2
+                sudo update-alternatives --set phar.phar /usr/bin/phar.phar$2
+                sudo update-alternatives --set phpize /usr/bin/phpize$2
+                sudo update-alternatives --set php-config /usr/bin/php-config$2
+              fi
+          
+              exit;
+            ;;
+          esac
+          
+          echo Usage: phpvm use \<php-version\>;
+          echo Example1: phpvm use 5.6;
+          echo Example2: phpvm use 7.4;
+
+    - name: Install PHP and extensions
+      include_tasks: 'tasks/php.yml'
+      loop: '{{ php.versions }}'
+      vars:
+        php_version: '{{ item }}'
+      when: 'php_version in support_php_versions'
+
+    - name: Set PHP {{ php.default_version }} as default PHP version
+      command: '/usr/local/bin/phpvm use {{ php.default_version }}'
+      when: 'php.default_version in php.versions and php.default_version in support_php_versions'
+      changed_when: false
+
+- name: Install the PHP drivers for Microsoft SQL Server
+  hosts: localhost
+  become: true
+  vars:
+    php_sqlsrv_extensions:
+      '7.0': { name: 'sqlsrv-5.3.0', dir: '/usr/lib/php/20151012' }
+      '7.1': { name: 'sqlsrv-5.6.1', dir: '/usr/lib/php/20160303' }
+      '7.2': { name: 'sqlsrv-5.8.1', dir: '/usr/lib/php/20170718' }
+      '7.3': { name: 'sqlsrv-5.9.0', dir: '/usr/lib/php/20180731' }
+      '7.4': { name: 'sqlsrv',       dir: '/usr/lib/php/20190902' }
+      '8.0': { name: 'sqlsrv',       dir: '/usr/lib/php/20200930' }
+      '8.1': { name: 'sqlsrv',       dir: '/usr/lib/php/20210902' }
+  tasks:
+    - name: 'Install Microsoft ODBC drivers and unixODBC development headers'
+      apt:
+        name: '{{ packages }}'
+        state: latest
+      vars:
+        packages:
+          - msodbcsql17
+          - msodbcsql18
+          - unixodbc-dev
+      environment:
+        ACCEPT_EULA: 'y'
+
+    - name: 'Register the package "sqlsrv" as not installed'
+      command: pecl uninstall -r sqlsrv
+      register: pecl_uninstall_response
+      changed_when: '"not installed" not in pecl_uninstall_response.stdout'
+    - name: 'Register the package "pdo_sqlsrv" as not installed'
+      command: pecl uninstall -r pdo_sqlsrv
+      register: pecl_uninstall_response
+      changed_when: '"not installed" not in pecl_uninstall_response.stdout'
+
+    - name: Install the PHP drivers for Microsoft SQL Server
+      include_tasks: 'tasks/php-pdo-sqlsrv.yml'
+      loop: '{{ php.versions }}'
+      vars:
+        php_version: '{{ item }}'
+        php_sqlsrv_extension_name: '{{ php_sqlsrv_extensions[php_version]["name"]|default("") }}'
+        php_sqlsrv_extension_dir: '{{ php_sqlsrv_extensions[php_version]["dir"]|default("") }}'
+      when: 'php_sqlsrv_extensions[php_version] is defined'
+
+- name: Install PHP Composer
+  hosts: localhost
+  become: true
+  tasks:
+    - name: 'Check composer is installed'
+      stat:
+        path: '/usr/local/bin/composer'
+      register: composer_stat_result
+
+    - name: Install Composer
+      shell: |
+        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+        php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+        php composer-setup.php
+        php -r "unlink('composer-setup.php');"
+        
+        mv composer.phar /usr/local/bin/composer
+      args:
+        creates: /usr/local/bin/composer
+      when: not composer_stat_result.stat.exists
+
+- name: Install Blackfire Agent and PHP extensions
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Install Blackfire Agent
+      apt:
+        name: blackfire-agent
+        state: latest
+      when: 'blackfire.install == true'
+
+    - name: Add Blackfire Agent configuration
+      template:
+        src: 'templates/blackfire/agent.j2'
+        dest: /etc/blackfire/agent
+        owner: root
+        group: root
+        mode: '0644'
+      when: 'blackfire.install == true'
+
+    - name: Install Blackfire PHP extension
+      apt:
+        name: blackfire-php
+        state: latest
+      when: 'blackfire.install == true'

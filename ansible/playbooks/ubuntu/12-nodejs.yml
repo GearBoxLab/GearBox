@@ -1,0 +1,22 @@
+- name: Install Node.js
+  hosts: localhost
+  become: true
+  vars:
+    version: '{{ nodejs.version|default(18) }}'
+    install_yarn: '{{ nodejs.install_yarn|default(true) }}'
+  tasks:
+    - name: Add NodeJS repository
+      shell: 'curl -fsSL https://deb.nodesource.com/setup_{{ version }}.x | bash -'
+      changed_when: false
+      args:
+        warn: false
+
+    - name: Install NodeJS
+      apt:
+        name: nodejs
+        state: latest
+
+    - name: Install Yarn
+      apt:
+        name: yarn
+        state: latest

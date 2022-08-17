@@ -1,0 +1,69 @@
+---
+- name: Setup common environment
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Add ppa:ondrej/php APT repository
+      apt_repository:
+        repo: ppa:ondrej/php
+        state: present
+
+    - name: Add Blackfire APT signing key
+      apt_key:
+        url: https://packages.blackfire.io/gpg.key
+        state: present
+    - name: Add Blackfire APT repository
+      apt_repository:
+        repo: deb https://packages.blackfire.io/debian any main
+        state: present
+
+    - name: Add Microsoft APT signing key
+      apt_key:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+    - name: Add Microsoft APT repository
+      get_url:
+        url: 'https://packages.microsoft.com/config/ubuntu/{{ ansible_distribution_version }}/prod.list'
+        dest: /etc/apt/sources.list.d/mssql-release.list
+        force: yes
+      changed_when: false
+
+    - name: Add Nginx APT signing key
+      apt_key:
+        url: https://nginx.org/keys/nginx_signing.key
+        state: present
+    - name: Add Nginx APT repository
+      apt_repository:
+        repo: 'deb https://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx'
+        state: present
+
+
+    - name: Do apt-get update
+      apt:
+        update_cache: yes
+        force_apt_get: yes
+      changed_when: false
+
+    - name: Update packages
+      apt:
+        upgrade: dist
+        force_apt_get: yes
+        state: latest
+      environment:
+        ACCEPT_EULA: 'y'
+
+
+    - name: Install common packages
+      apt:
+        name: '{{ packages }}'
+        state: latest
+      vars:
+        packages:
+          - curl
+          - dos2unix
+          - git
+          - libncurses5-dev
+          - mysql-client
+          - tar
+          - unzip
+          - wget

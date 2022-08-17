@@ -1,0 +1,16 @@
+---
+- name: Install Memcached Server
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install Memcached Server
+      apt:
+        name: memcached
+        state: latest
+
+    - name: Enable memcached server service
+      ansible.builtin.service:
+        name: memcached
+        enabled: yes
+        state: started
+      when: 'wsl == false and memcached.enable_service == true'

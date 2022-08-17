@@ -1,0 +1,21 @@
+---
+- name: Generate gearbox-service command for start/stop/restart services
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Generate gearbox-service command
+      template:
+        src: 'templates/gearbox-service.j2'
+        dest: /usr/local/bin/gearbox-service
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Add sudoers file for gearbox-service command
+      copy:
+        content: '{{ content }}'
+        dest: '/etc/sudoers.d/{{ username }}-gearbox-service'
+        mode: '600'
+      vars:
+        content: |
+          {{ username }} ALL=(root) NOPASSWD: /usr/local/bin/gearbox-service

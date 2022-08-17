@@ -1,0 +1,16 @@
+---
+- name: Install Redis Server
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install Redis Server
+      apt:
+        name: redis-server
+        state: latest
+
+    - name: Enable redis server service
+      ansible.builtin.service:
+        name: redis-server
+        enabled: yes
+        state: started
+      when: 'wsl == false and redis.enable_service == true'

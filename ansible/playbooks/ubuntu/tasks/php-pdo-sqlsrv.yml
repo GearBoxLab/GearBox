@@ -1,0 +1,56 @@
+---
+- name: 'Use PHP {{ php_version }}'
+  command: 'phpvm use {{ php_version }}'
+  changed_when: false
+
+- name: 'Check package {{ php_sqlsrv_extension_name }} is installed'
+  stat:
+    path: '{{ php_sqlsrv_extension_dir }}/sqlsrv.so'
+  register: sqlsrv_stat_result
+- name: 'Check package pdo_{{ php_sqlsrv_extension_name }} is installed'
+  stat:
+    path: '{{ php_sqlsrv_extension_dir }}/pdo_sqlsrv.so'
+  register: pdo_sqlsrv_stat_result
+
+- name: 'Install package "{{ php_sqlsrv_extension_name }}" for PHP {{ php_version }}'
+  command: 'pecl -d php_suffix={{ php_version }} install {{ php_sqlsrv_extension_name }}'
+  when: not sqlsrv_stat_result.stat.exists
+- name: 'Install package "pdo_{{ php_sqlsrv_extension_name }}" for PHP {{ php_version }}'
+  command: 'pecl -d php_suffix={{ php_version }} install pdo_{{ php_sqlsrv_extension_name }}'
+  when: not pdo_sqlsrv_stat_result.stat.exists
+
+- name: 'Add sqlsrv.ini for PHP {{ php_version }}'
+  copy:
+    content: '{{ content }}'
+    dest: '/etc/php/{{ php_version }}/mods-available/sqlsrv.ini'
+  vars:
+    content: |
+      ;
+      priority=20
+      extension=sqlsrv.so
+
+- name: 'Add pdo_sqlsrv.ini for PHP {{ php_version }}'
+  copy:
+    content: '{{ content }}'
+    dest: '/etc/php/{{ php_version }}/mods-available/pdo_sqlsrv.ini'
+  vars:
+    content: |
+      ;
+      priority=30
+      extension=pdo_sqlsrv.so
+
+- name: 'Enable sqlsrv module for PHP {{ php_version }}'
+  command: 'phpenmod -v {{ php_version }} sqlsrv'
+  changed_when: false
+- name: 'Enable pdo_sqlsrv module for PHP {{ php_version }}'
+  command: 'phpenmod -v {{ php_version }} pdo_sqlsrv'
+  changed_when: false
+
+- name: 'Register the package "sqlsrv" as not installed'
+  command: pecl uninstall -r sqlsrv
+  register: pecl_uninstall_response
+  changed_when: '"not installed" not in pecl_uninstall_response.stdout'
+- name: 'Register the package "pdo_sqlsrv" as not installed'
+  command: pecl uninstall -r pdo_sqlsrv
+  register: pecl_uninstall_response
+  changed_when: '"not installed" not in pecl_uninstall_response.stdout'

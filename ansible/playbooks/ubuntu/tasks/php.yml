@@ -1,0 +1,42 @@
+- name: 'Install PHP {{ php_version }} and extensions'
+  apt:
+    name: '{{ packages }}'
+    state: latest
+  vars:
+    packages:
+      - 'php{{ php_version }}'
+      - 'php{{ php_version }}-common'
+      - 'php{{ php_version }}-apcu'
+      - 'php{{ php_version }}-bcmath'
+      - 'php{{ php_version }}-curl'
+      - 'php{{ php_version }}-dev'
+      - 'php{{ php_version }}-enchant'
+      - 'php{{ php_version }}-fpm'
+      - 'php{{ php_version }}-gd'
+      - 'php{{ php_version }}-gmp'
+      - 'php{{ php_version }}-imagick'
+      - 'php{{ php_version }}-imap'
+      - 'php{{ php_version }}-interbase'
+      - 'php{{ php_version }}-intl'
+      - 'php{{ php_version }}-ldap'
+      - 'php{{ php_version }}-mbstring'
+      - 'php{{ php_version }}-mcrypt'
+      - 'php{{ php_version }}-memcache'
+      - 'php{{ php_version }}-memcached'
+      - 'php{{ php_version }}-mysql'
+      - 'php{{ php_version }}-odbc'
+      - 'php{{ php_version }}-pgsql'
+      - 'php{{ php_version }}-redis'
+      - 'php{{ php_version }}-snmp'
+      - 'php{{ php_version }}-soap'
+      - 'php{{ php_version }}-tidy'
+      - 'php{{ php_version }}-xdebug'
+      - 'php{{ php_version }}-xml'
+      - 'php{{ php_version }}-zip'
+
+- name: Enable php{{ php_version }}-fpm service
+  ansible.builtin.service:
+    name: 'php{{ php_version }}-fpm'
+    enabled: yes
+    state: started
+  when: 'wsl == false and php.enable_service == true'

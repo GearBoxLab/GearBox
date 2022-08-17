@@ -1,0 +1,18 @@
+- name: 'Download v{{ golang.version }} package'
+  get_url:
+    url: 'https://go.dev/dl/go{{ golang.version }}.linux-amd64.tar.gz'
+    dest: '/usr/local/go{{ golang.version }}.linux-amd64.tar.gz'
+    force: true
+  become: yes
+
+- name: Remove previous Go installation
+  command: rm -rf /usr/local/go
+  become: yes
+
+- name: Extract Go package
+  command: 'tar -C /usr/local -xzf /usr/local/go{{ golang.version }}.linux-amd64.tar.gz'
+  become: yes
+
+- name: Remove downloaded file
+  command: 'rm /usr/local/go{{ golang.version }}.linux-amd64.tar.gz'
+  become: yes

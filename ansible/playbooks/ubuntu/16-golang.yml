@@ -1,0 +1,19 @@
+---
+- name: 'Install Golang'
+  hosts: localhost
+  tasks:
+    - name: Check Golang current version
+      shell: '/usr/local/go/bin/go version | grep "go\K([0-9.]+)" -P -o'
+      register: golang_version_result
+      ignore_errors: true
+      changed_when: false
+
+    - name: 'Install Go v{{ golang.version }}'
+      include_tasks: 'tasks/golang.yml'
+      when: golang.version != golang_version_result.stdout
+
+    - name: Add /usr/local/go/bin to the PATH environment variable
+      lineinfile:
+        dest: '~/.profile'
+        line: 'export PATH="$PATH:/usr/local/go/bin"'
+        state: present
