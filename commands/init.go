@@ -1,9 +1,8 @@
 package commands
 
 import (
-	"fmt"
-
 	"LeoOnTheEarth/GearBox/configuration"
+	"fmt"
 
 	"github.com/symfony-cli/console"
 )
@@ -11,10 +10,16 @@ import (
 var initCommand = &console.Command{
 	Name:  "init",
 	Usage: fmt.Sprintf("Generate default configuration file (%s)", getConfigurationPath()),
-	Action: func(c *console.Context) error {
-		_, err := configuration.Load()
+	Action: func(c *console.Context) (err error) {
+		if _, err = configuration.Load(); nil != err {
+			return err
+		}
 
-		return err
+		if err = updateEnvPath(); nil != err {
+			return err
+		}
+
+		return nil
 	},
 }
 
