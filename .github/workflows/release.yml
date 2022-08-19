@@ -1,0 +1,50 @@
+name: Upload GearBox binaries
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Upload GearBox binaries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sets up Go environment
+        uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.9'
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Build GearBox binaries
+        run: |
+          mkdir -p dist
+          CGO_ENABLED=0 GOOS=linux   GOARCH=amd64 go build -o "gearbox-$(git describe --tags)-linux-amd64"       -ldflags "-X main.Version=$(git describe --tags)"
+          CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o "gearbox-$(git describe --tags)-windows-amd64.exe" -ldflags "-X main.Version=$(git describe --tags)"
+      - name: Upload GearBox binaries
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require("fs").promises;
+            
+            const release = await github.rest.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: process.env.GITHUB_REF.replace("refs/tags/", ""),
+            });
+            console.log("Release:", { release });
+
+            for (let file of await fs.readdir(".")) {
+              if (!file.startsWith("gearbox-")) {
+                continue;
+              }
+              console.log("Uploading", file);
+              
+              await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.data.id,
+                name: file,
+                data: await fs.readFile(file),
+              });
+            }
