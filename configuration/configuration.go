@@ -12,14 +12,15 @@ const FileName = "config.json"
 const ExtraVarsFileName = "extra-vars.json"
 
 type Configuration struct {
-	PHP              confPHP              `json:"php"`
-	Blackfire        confBlackfire        `json:"blackfire"`
-	NodeJS           confNodeJS           `json:"nodejs"`
-	GoLang           confGoLang           `json:"golang"`
-	Nginx            confNginx            `json:"nginx"`
-	Memcached        confMemcached        `json:"memcached"`
-	Redis            confRedis            `json:"redis"`
-	ImportHostsFiles []confImportHostFile `json:"import_hosts_files"`
+	PHP               confPHP               `json:"php"`
+	Blackfire         confBlackfire         `json:"blackfire"`
+	NodeJS            confNodeJS            `json:"nodejs"`
+	GoLang            confGoLang            `json:"golang"`
+	Nginx             confNginx             `json:"nginx"`
+	Memcached         confMemcached         `json:"memcached"`
+	Redis             confRedis             `json:"redis"`
+	ImportHostsFiles  []confImportHostFile  `json:"import_hosts_files"`
+	ExtraAnsibleTasks confExtraAnsibleTasks `json:"extra_ansible_tasks"`
 }
 
 type confPHP struct {
@@ -70,6 +71,11 @@ type confImportHostFile struct {
 	Path string `json:"path"`
 }
 
+type confExtraAnsibleTasks struct {
+	TaskFiles    []string `json:"task_files"`
+	VariableFile string   `json:"variable_file"`
+}
+
 func (c *Configuration) ToJson() string {
 	if content, err := json.Marshal(c); nil != err {
 		return ""
@@ -118,6 +124,10 @@ func New() *Configuration {
 			EnableService: true,
 		},
 		ImportHostsFiles: []confImportHostFile{},
+		ExtraAnsibleTasks: confExtraAnsibleTasks{
+			TaskFiles:    []string{},
+			VariableFile: "",
+		},
 	}
 }
 

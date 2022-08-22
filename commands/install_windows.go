@@ -87,7 +87,7 @@ var installCommand = &console.Command{
 		if true == terminal.AskConfirmation("Start to install?", false) {
 			terminal.Print("\n")
 
-			if err = ansibleInstaller.RunAnsiblePlaybook(playbookMainFilePath, configurationFilePath, wslExtraVarFilePath, sudoPassword); nil != err {
+			if err = ansibleInstaller.RunAnsiblePlaybook(playbookMainFilePath, configurationFilePath, wslExtraVarFilePath, sudoPassword, conf); nil != err {
 				return err
 			}
 		}

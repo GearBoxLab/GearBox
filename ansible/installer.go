@@ -84,14 +84,19 @@ func (i *Installer) installPlaybookFiles(playbookName string) error {
 	return nil
 }
 
-func (i *Installer) RunAnsiblePlaybook(playbookFilePath, configurationFilePath, extraVarFilePath, sudoPassword string) (err error) {
-	p := i.processFactory.NewProcess(
-		"ansible-playbook",
+func (i *Installer) RunAnsiblePlaybook(playbookFilePath, configurationFilePath, extraVarFilePath, sudoPassword string, conf *configuration.Configuration) (err error) {
+	args := []string{
 		playbookFilePath,
-		"--extra-vars", "@"+configurationFilePath,
-		"--extra-vars", "ansible_become_password="+sudoPassword,
-		"--extra-vars", "@"+extraVarFilePath,
-	)
+		"--extra-vars", "@" + configurationFilePath,
+		"--extra-vars", "ansible_become_password=" + sudoPassword,
+		"--extra-vars", "@" + extraVarFilePath,
+	}
+
+	if "" != strings.TrimSpace(conf.ExtraAnsibleTasks.VariableFile) {
+		args = append(args, "--extra-vars", "@"+strings.TrimSpace(conf.ExtraAnsibleTasks.VariableFile))
+	}
+
+	p := i.processFactory.NewProcess("ansible-playbook", args...)
 
 	if terminal.GetLogLevel() > 1 {
 		verbose := "-" + strings.Repeat("v", terminal.GetLogLevel()-1)
