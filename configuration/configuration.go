@@ -12,13 +12,14 @@ const FileName = "config.json"
 const ExtraVarsFileName = "extra-vars.json"
 
 type Configuration struct {
-	PHP       confPHP       `json:"php"`
-	Blackfire confBlackfire `json:"blackfire"`
-	NodeJS    confNodeJS    `json:"nodejs"`
-	GoLang    confGoLang    `json:"golang"`
-	Nginx     confNginx     `json:"nginx"`
-	Memcached confMemcached `json:"memcached"`
-	Redis     confRedis     `json:"redis"`
+	PHP              confPHP              `json:"php"`
+	Blackfire        confBlackfire        `json:"blackfire"`
+	NodeJS           confNodeJS           `json:"nodejs"`
+	GoLang           confGoLang           `json:"golang"`
+	Nginx            confNginx            `json:"nginx"`
+	Memcached        confMemcached        `json:"memcached"`
+	Redis            confRedis            `json:"redis"`
+	ImportHostsFiles []confImportHostFile `json:"import_hosts_files"`
 }
 
 type confPHP struct {
@@ -62,6 +63,11 @@ type confMemcached struct {
 type confRedis struct {
 	Install       bool `json:"install"`
 	EnableService bool `json:"enable_service"`
+}
+
+type confImportHostFile struct {
+	Name string `json:"name"`
+	Path string `json:"path"`
 }
 
 func (c *Configuration) ToJson() string {
@@ -111,6 +117,7 @@ func New() *Configuration {
 			Install:       true,
 			EnableService: true,
 		},
+		ImportHostsFiles: []confImportHostFile{},
 	}
 }
 

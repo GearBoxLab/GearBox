@@ -20,6 +20,7 @@ func All() []*console.Command {
 		versionCommand,
 		initCommand,
 		installCommand,
+		importHostsCommand,
 	}
 }
 
