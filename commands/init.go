@@ -22,9 +22,3 @@ var initCommand = &console.Command{
 		return nil
 	},
 }
-
-func getConfigurationPath() string {
-	confFilePath, _ := configuration.Path()
-
-	return confFilePath
-}

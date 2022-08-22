@@ -119,16 +119,3 @@ func isSupportedDistribution() (ok bool, distribution string) {
 
 	return false, ""
 }
-
-func isWsl() bool {
-	var result []byte
-	var err error
-
-	cmd := exec.Command("uname", "-a")
-
-	if result, err = cmd.Output(); nil != err {
-		return false
-	}
-
-	return regexp.MustCompile(`(?i)microsoft|wsl`).Match(result)
-}

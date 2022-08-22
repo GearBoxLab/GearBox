@@ -2,8 +2,11 @@ package commands
 
 import (
 	"os"
+	"os/exec"
+	"regexp"
 	"strings"
 
+	"LeoOnTheEarth/GearBox/configuration"
 	"LeoOnTheEarth/GearBox/process"
 
 	"github.com/symfony-cli/console"
@@ -44,4 +47,37 @@ func readSudoPassword() (sudoPassword string, err error) {
 	terminal.Print("\n\n")
 
 	return sudoPassword, nil
+}
+
+func getConfigurationPath() string {
+	confFilePath, err := configuration.Path()
+
+	if nil != err {
+		panic(err)
+	}
+
+	return confFilePath
+}
+
+func getConfigurationDir() string {
+	confFilePath, err := configuration.Dir()
+
+	if nil != err {
+		panic(err)
+	}
+
+	return confFilePath
+}
+
+func isWsl() bool {
+	var result []byte
+	var err error
+
+	cmd := exec.Command("uname", "-a")
+
+	if result, err = cmd.Output(); nil != err {
+		return false
+	}
+
+	return regexp.MustCompile(`(?i)microsoft|wsl`).Match(result)
 }
