@@ -121,6 +121,13 @@
         state: latest
       when: 'blackfire.install == true'
 
+    - name: Enable blackfire-agent service
+      ansible.builtin.service:
+        name: 'blackfire-agent'
+        enabled: yes
+        state: started
+      when: 'wsl == false and blackfire.enable_service == true'
+
     - name: Add Blackfire Agent configuration
       template:
         src: 'templates/blackfire/agent.j2'
