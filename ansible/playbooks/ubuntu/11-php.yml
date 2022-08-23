@@ -29,9 +29,11 @@
             ;;
           esac
           
-          echo Usage: phpvm use \<php-version\>;
-          echo Example1: phpvm use 5.6;
-          echo Example2: phpvm use 7.4;
+          echo Usage: phpvm use \<php-version\>
+          echo 'Example1: phpvm use 5.6'
+          echo '          then run "php --version" will get "PHP 5.6.x"'
+          echo 'Example2: phpvm use 7.4'
+          echo '          then run "php --version" will get "PHP 7.4.x"'
 
     - name: Install PHP and extensions
       include_tasks: 'tasks/php.yml'
