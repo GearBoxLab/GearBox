@@ -144,7 +144,7 @@ Default configuration as below:
 
 | Variable Name  | Type   | Description                                 | Default                                  |
 |----------------|--------|---------------------------------------------|------------------------------------------|
-| install        | bool   | Install Blackfire or not                    | `true`                                   |
+| install        | bool   | Install Blackfire or not                    | `false`                                  |
 | collector      | string | Setup blackfire-agent config "collector"    | `"https://blackfire.io"`                 |
 | log_level      | int    | Setup blackfire-agent config "log-level"    | `1`                                      |
 | server_id      | string | Setup blackfire-agent config "server-id"    | `""`                                     |
