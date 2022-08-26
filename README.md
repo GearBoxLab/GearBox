@@ -233,12 +233,17 @@ and is ended with a line `##<<< INSERTED BY GEARBOX ## <block_name> ## END   <<<
 
 ### Extra Ansible Task configuration
 
+`extra_ansible_tasks` setup extra ansible task files and a variable file to run after the main installation tasks.
+
 | Variable Name | Type     | Description                                                                       | Default |
 |---------------|----------|-----------------------------------------------------------------------------------|---------|
 | task_files    | []string | An array of file paths that contain Ansible Tasks                                 | `true`  |
-| variable_file | string   | A file path that contains variables using in Ansible Tasks (format: json or yaml) | `true`  |
+| variable_file | string   | A file path that contains variables using in Ansible Tasks (format: JSON or YAML) | `true`  |
 
-Example task file:
+- In Linux, file path with the form `/path/to/file.yaml`
+- In Windows, file path with the form `C:\\path\\to\\file.yaml`, or with WSL file path (e.g. `/mnt/c/path/to/file.yaml`)
+
+Example task file (e.g. `/path/to/task.yaml`):
 
 ```yaml
 - name: Debug example
@@ -249,10 +254,23 @@ Example task file:
     msg: '{{ foobar }}'
 ```
 
-Example variable file:
+Example variable file with JSON format (e.g. `/path/to/variables.json`):
 
 ```json
 {
-  "foobar": "This is a variable file example."
+  "foobar": "This is a variable file example.",
+  "list": ["foo", "bar", "foobar"]
 }
+```
+
+Example variable file with YAML format (e.g. `/path/to/variables.yaml`):
+
+```yaml
+---
+# Some comments...
+foobar: This is a variable file example.
+list:
+  - "foo"
+  - "bar"
+  - "foobar"
 ```
