@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"LeoOnTheEarth/GearBox/ansible"
@@ -15,6 +16,8 @@ import (
 	"github.com/symfony-cli/console"
 	"github.com/symfony-cli/terminal"
 )
+
+var windowsFilePathRegexp = regexp.MustCompile(`^[a-zA-Z]:\\`)
 
 var installCommand = &console.Command{
 	Name: "install",
@@ -45,6 +48,9 @@ var installCommand = &console.Command{
 		}
 
 		if conf, err = configuration.Load(); nil != err {
+			return err
+		}
+		if err = convertConfigurationFilePaths(conf, WSL); nil != err {
 			return err
 		}
 
@@ -104,4 +110,19 @@ func getDefaultDistribution() string {
 	distribution, _ := wsl.GetDefaultDistribution()
 
 	return distribution
+}
+
+func convertConfigurationFilePaths(conf *configuration.Configuration, WSL *wsl.WSL) (err error) {
+	var newPath string
+
+	for i, path := range conf.ExtraAnsibleTasks.TaskFiles {
+		if windowsFilePathRegexp.MatchString(path) {
+			if newPath, err = WSL.ConvertToLinuxPath(path); nil != err {
+				return err
+			}
+			conf.ExtraAnsibleTasks.TaskFiles[i] = newPath
+		}
+	}
+
+	return nil
 }
