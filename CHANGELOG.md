@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+## v0.2.1
+
+- Fix bug after running "REFRESHENV" command
+- Force to use Windows version in WSL distributions
+- Convert windows' file path to WSL's file path
+- Update README.md for "extra_ansible_tasks" configuration
+
 ## v0.2.0
 
 - Add commands:
