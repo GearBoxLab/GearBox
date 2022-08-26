@@ -24,6 +24,11 @@ var installCommand = &console.Command{
 	Name:  "install",
 	Usage: "Install packages with Ansible script.",
 	Action: func(c *console.Context) (err error) {
+		if isWsl() {
+			terminal.Print(terminal.FormatBlockMessage("error", `You must use the Windows version to run "install" command.`))
+			return nil
+		}
+
 		var playbookName string
 		var conf *configuration.Configuration
 		var username string
