@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.3.0
+
+- Extend to add multiple variable files (`extra_ansible_tasks.variable_files`) to run extra Ansible Tasks
+
 ## v0.2.1
 
 - Fix bug after running "REFRESHENV" command
