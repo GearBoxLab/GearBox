@@ -92,8 +92,8 @@ func (i *Installer) RunAnsiblePlaybook(playbookFilePath, configurationFilePath, 
 		"--extra-vars", "@" + extraVarFilePath,
 	}
 
-	if "" != strings.TrimSpace(conf.ExtraAnsibleTasks.VariableFile) {
-		args = append(args, "--extra-vars", "@"+strings.TrimSpace(conf.ExtraAnsibleTasks.VariableFile))
+	for _, variableFile := range conf.ExtraAnsibleTasks.VariableFiles {
+		args = append(args, "--extra-vars", "@"+strings.TrimSpace(variableFile))
 	}
 
 	p := i.processFactory.NewProcess("ansible-playbook", args...)

@@ -112,7 +112,7 @@ Default configuration as below:
   "import_hosts_files": [],
   "extra_ansible_tasks": {
     "task_files": [],
-    "variable_file": ""
+    "variable_file": []
   }
 }
 ```
@@ -235,10 +235,10 @@ and is ended with a line `##<<< INSERTED BY GEARBOX ## <block_name> ## END   <<<
 
 `extra_ansible_tasks` setup extra ansible task files and a variable file to run after the main installation tasks.
 
-| Variable Name | Type     | Description                                                                       | Default |
-|---------------|----------|-----------------------------------------------------------------------------------|---------|
-| task_files    | []string | An array of file paths that contain Ansible Tasks                                 | `true`  |
-| variable_file | string   | A file path that contains variables using in Ansible Tasks (format: JSON or YAML) | `true`  |
+| Variable Name  | Type     | Description                                                                                  | Default |
+|----------------|----------|----------------------------------------------------------------------------------------------|---------|
+| task_files     | []string | An array of file paths that contain Ansible Tasks                                            | `true`  |
+| variable_files | []string | An array of file paths that contains variables using in Ansible Tasks (format: JSON or YAML) | `true`  |
 
 - In Linux, file path with the form `/path/to/file.yaml`
 - In Windows, file path with the form `C:\\path\\to\\file.yaml`, or with WSL file path (e.g. `/mnt/c/path/to/file.yaml`)

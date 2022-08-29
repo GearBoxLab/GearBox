@@ -72,8 +72,8 @@ type confImportHostFile struct {
 }
 
 type confExtraAnsibleTasks struct {
-	TaskFiles    []string `json:"task_files"`
-	VariableFile string   `json:"variable_file"`
+	TaskFiles     []string `json:"task_files"`
+	VariableFiles []string `json:"variable_files"`
 }
 
 func (c *Configuration) ToJson() string {
@@ -125,8 +125,8 @@ func New() *Configuration {
 		},
 		ImportHostsFiles: []confImportHostFile{},
 		ExtraAnsibleTasks: confExtraAnsibleTasks{
-			TaskFiles:    []string{},
-			VariableFile: "",
+			TaskFiles:     []string{},
+			VariableFiles: []string{},
 		},
 	}
 }
