@@ -12,6 +12,7 @@ import (
 )
 
 var playbookNames = map[string]string{
+	"Ubuntu":       "ubuntu",
 	"Ubuntu-18.04": "ubuntu",
 	"Ubuntu-20.04": "ubuntu",
 }
