@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+## v0.4.0
+
+- Change config "extra_ansible_tasks" to "extra_ansible_playbooks"
+
+  It is more convenience to use playbook files rather than task files
+- Add playbook name mapping for `Ubuntu` distribution to WSL environment
+
 ## v0.3.0
 
 - Extend to add multiple variable files (`extra_ansible_tasks.variable_files`) to run extra Ansible Tasks
