@@ -23,7 +23,7 @@ func NewInstaller(processFactory process.Factory) *Installer {
 	}
 }
 
-func (i *Installer) Install(playbookName, sudoPassword string) error {
+func (i *Installer) Install(playbookName, sudoPassword string, conf *configuration.Configuration) error {
 	if installed, err := isAnsibleInstalled(i.processFactory); nil != err {
 		return err
 	} else {
@@ -46,7 +46,7 @@ func (i *Installer) Install(playbookName, sudoPassword string) error {
 			}
 		}
 
-		if err = i.installPlaybookFiles(playbookName); nil != err {
+		if err = i.installPlaybookFiles(playbookName, conf); nil != err {
 			return err
 		}
 	}
@@ -54,7 +54,7 @@ func (i *Installer) Install(playbookName, sudoPassword string) error {
 	return nil
 }
 
-func (i *Installer) installPlaybookFiles(playbookName string) error {
+func (i *Installer) installPlaybookFiles(playbookName string, conf *configuration.Configuration) error {
 	var dir string
 	var err error
 	var results []*InstallResult
@@ -63,7 +63,7 @@ func (i *Installer) installPlaybookFiles(playbookName string) error {
 		return err
 	}
 
-	if results, err = InstallPlaybookFiles(playbookName, dir); nil != err {
+	if results, err = InstallPlaybookFiles(playbookName, dir, conf); nil != err {
 		return err
 	}
 
@@ -92,7 +92,7 @@ func (i *Installer) RunAnsiblePlaybook(playbookFilePath, configurationFilePath, 
 		"--extra-vars", "@" + extraVarFilePath,
 	}
 
-	for _, variableFile := range conf.ExtraAnsibleTasks.VariableFiles {
+	for _, variableFile := range conf.ExtraAnsiblePlaybooks.VariableFiles {
 		args = append(args, "--extra-vars", "@"+strings.TrimSpace(variableFile))
 	}
 

@@ -1,9 +1,12 @@
 package ansible
 
 import (
+	"LeoOnTheEarth/GearBox/configuration"
 	"crypto/md5"
 	"embed"
 	"errors"
+	"fmt"
+	"html/template"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -22,11 +25,11 @@ type file struct {
 	dir  string
 }
 
-func InstallPlaybookFiles(name string, installDir string) (results []*InstallResult, err error) {
+func InstallPlaybookFiles(playbookName string, installDir string, conf *configuration.Configuration) (results []*InstallResult, err error) {
 	var files []*file
 	results = make([]*InstallResult, 0)
 
-	if files, err = scanDir("playbooks/" + name); nil != err {
+	if files, err = scanDir("playbooks/" + playbookName); nil != err {
 		return results, err
 	} else {
 		var installed bool
@@ -38,11 +41,16 @@ func InstallPlaybookFiles(name string, installDir string) (results []*InstallRes
 			} else if false == installed {
 				if result, err = installPlaybookFile(f, installDir); nil != err {
 					return results, err
-				}
-				if "" != result.CreatedFile || "" != result.CreatedDir {
+				} else if "" != result.CreatedFile || "" != result.CreatedDir {
 					results = append(results, result)
 				}
 			}
+		}
+
+		if result, err = installPlaybookMainFile(playbookName, installDir, conf); nil != err {
+			return results, err
+		} else if "" != result.CreatedFile || "" != result.CreatedDir {
+			results = append(results, result)
 		}
 	}
 
@@ -123,4 +131,30 @@ func installPlaybookFile(f *file, installDir string) (result *InstallResult, err
 	}
 
 	return result, nil
+}
+
+func installPlaybookMainFile(playbookName, installDir string, conf *configuration.Configuration) (result *InstallResult, err error) {
+	var tmpl *template.Template
+	var targetFS *os.File
+	targetPath := filepath.Join(installDir, "playbooks", playbookName, "main.yml")
+	result = &InstallResult{"", ""}
+
+	x, _ := playbooks.ReadFile("playbooks/main.yml.gotmpl")
+	fmt.Printf("template: %s\n", x)
+
+	if tmpl, err = template.ParseFS(playbooks, "playbooks/main.yml.gotmpl"); nil != err {
+		return result, err
+	}
+
+	if targetFS, err = os.Create(targetPath); nil != err {
+		return result, err
+	}
+
+	if err = tmpl.Execute(targetFS, conf); nil != err {
+		return result, err
+	}
+
+	result.CreatedFile = targetPath
+
+	return result, err
 }

@@ -13,6 +13,7 @@
 - import_playbook: '16-golang.yml'
   when: 'golang.install == true'
 - import_playbook: '20-services.yml'
-- import_playbook: '98-extra-tasks.yml'
-  when: 'extra_ansible_tasks.task_files|length > 0'
+{{ range $key, $file := .ExtraAnsiblePlaybooks.PlaybookFiles -}}
+- import_playbook: '{{ $file }}'
+{{- end }}
 - import_playbook: '99-finish.yml'

@@ -57,7 +57,7 @@ var installCommand = &console.Command{
 
 		ansibleInstaller := ansible.NewInstaller(processFactory)
 
-		if err = ansibleInstaller.Install(playbookName, sudoPassword); nil != err {
+		if err = ansibleInstaller.Install(playbookName, sudoPassword, conf); nil == err {
 			return err
 		}
 

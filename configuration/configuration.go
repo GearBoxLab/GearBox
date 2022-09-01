@@ -12,15 +12,15 @@ const FileName = "config.json"
 const ExtraVarsFileName = "extra-vars.json"
 
 type Configuration struct {
-	PHP               confPHP               `json:"php"`
-	Blackfire         confBlackfire         `json:"blackfire"`
-	NodeJS            confNodeJS            `json:"nodejs"`
-	GoLang            confGoLang            `json:"golang"`
-	Nginx             confNginx             `json:"nginx"`
-	Memcached         confMemcached         `json:"memcached"`
-	Redis             confRedis             `json:"redis"`
-	ImportHostsFiles  []confImportHostFile  `json:"import_hosts_files"`
-	ExtraAnsibleTasks confExtraAnsibleTasks `json:"extra_ansible_tasks"`
+	PHP                   confPHP                   `json:"php"`
+	Blackfire             confBlackfire             `json:"blackfire"`
+	NodeJS                confNodeJS                `json:"nodejs"`
+	GoLang                confGoLang                `json:"golang"`
+	Nginx                 confNginx                 `json:"nginx"`
+	Memcached             confMemcached             `json:"memcached"`
+	Redis                 confRedis                 `json:"redis"`
+	ImportHostsFiles      []confImportHostFile      `json:"import_hosts_files"`
+	ExtraAnsiblePlaybooks confExtraAnsiblePlaybooks `json:"extra_ansible_playbooks"`
 }
 
 type confPHP struct {
@@ -71,8 +71,8 @@ type confImportHostFile struct {
 	Path string `json:"path"`
 }
 
-type confExtraAnsibleTasks struct {
-	TaskFiles     []string `json:"task_files"`
+type confExtraAnsiblePlaybooks struct {
+	PlaybookFiles []string `json:"playbook_files"`
 	VariableFiles []string `json:"variable_files"`
 }
 
@@ -124,8 +124,8 @@ func New() *Configuration {
 			EnableService: true,
 		},
 		ImportHostsFiles: []confImportHostFile{},
-		ExtraAnsibleTasks: confExtraAnsibleTasks{
-			TaskFiles:     []string{},
+		ExtraAnsiblePlaybooks: confExtraAnsiblePlaybooks{
+			PlaybookFiles: []string{},
 			VariableFiles: []string{},
 		},
 	}

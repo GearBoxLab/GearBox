@@ -61,7 +61,7 @@ var installCommand = &console.Command{
 		ansibleInstaller := ansible.NewInstaller(WSL)
 		playbookName := wsl.GetPlaybookName(distribution)
 
-		if err = ansibleInstaller.Install(playbookName, sudoPassword); nil != err {
+		if err = ansibleInstaller.Install(playbookName, sudoPassword, conf); nil != err {
 			return err
 		}
 
@@ -115,12 +115,21 @@ func getDefaultDistribution() string {
 func convertConfigurationFilePaths(conf *configuration.Configuration, WSL *wsl.WSL) (err error) {
 	var newPath string
 
-	for i, path := range conf.ExtraAnsibleTasks.TaskFiles {
+	for i, path := range conf.ExtraAnsiblePlaybooks.PlaybookFiles {
 		if windowsFilePathRegexp.MatchString(path) {
 			if newPath, err = WSL.ConvertToLinuxPath(path); nil != err {
 				return err
 			}
-			conf.ExtraAnsibleTasks.TaskFiles[i] = newPath
+			conf.ExtraAnsiblePlaybooks.PlaybookFiles[i] = newPath
+		}
+	}
+
+	for i, path := range conf.ExtraAnsiblePlaybooks.VariableFiles {
+		if windowsFilePathRegexp.MatchString(path) {
+			if newPath, err = WSL.ConvertToLinuxPath(path); nil != err {
+				return err
+			}
+			conf.ExtraAnsiblePlaybooks.VariableFiles[i] = newPath
 		}
 	}
 
