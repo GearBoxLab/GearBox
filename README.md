@@ -7,8 +7,9 @@ GearBox helps to easily create the same web development environment in Windows(W
 
 1. Supported OS:
    - Windows 10/11 with WSL enabled. Supported WSL distributions:
-       - Ubuntu-18.04
-       - Ubuntu-20.04
+     - Ubuntu
+     - Ubuntu-18.04
+     - Ubuntu-20.04
    - Linux distributions:
      - Ubuntu
 2. Install packages:
@@ -40,11 +41,10 @@ GearBox helps to easily create the same web development environment in Windows(W
 1. Need Windows 10 version 2004 and higher (Build 19041 and higher) or Windows 11.
 2. Enable [WSL (Windows Subsystem for Linux)](https://docs.microsoft.com/en-us/windows/wsl/install-manual).
 3. Set up WSL default version to 1. (It is recommended to use WSL1 for [better filesystem performance](https://docs.microsoft.com/en-us/windows/wsl/compare-versions#comparing-features))
-
-    ```bash
-    # Set WSL default version to 1.
-    wsl --set-default-version 1
-    ```
+   ```bash
+   # Set WSL default version to 1.
+   wsl --set-default-version 1
+   ```
 4. [Install a Linux distribution](https://docs.microsoft.com/en-us/windows/wsl/install).
 
 ### Installation
@@ -119,17 +119,17 @@ Default configuration as below:
 
 ### Variable definition
 
-| Variable Name       | Type     | Description                                                           |
-|---------------------|----------|-----------------------------------------------------------------------|
-| php                 | object   | [PHP configuration](#php-configuration)                               |
-| blackfire           | object   | [Blackfire configuration](#blackfire-configuration)                   |
-| nodejs              | object   | [NodeJS configuration](#nodejs-configuration)                         |
-| golang              | object   | [GoLang configuration](#golang-configuration)                         |
-| nginx               | object   | [Nginx configuration](#nginx-configuration)                           |
-| memcached           | object   | [Memcached configuration](#memcached-configuration)                   |
-| redis               | object   | [Redis configuration](#redis-configuration)                           |
-| import_hosts_files  | []object | [Import hosts configuration](#import-hosts-configuration)             |
-| extra_ansible_tasks | object   | [Extra Ansible Task configuration](#extra-ansible-task-configuration) |
+| Variable Name           | Type     | Description                                                                     |
+|-------------------------|----------|---------------------------------------------------------------------------------|
+| php                     | object   | [PHP configuration](#php-configuration)                                         |
+| blackfire               | object   | [Blackfire configuration](#blackfire-configuration)                             |
+| nodejs                  | object   | [NodeJS configuration](#nodejs-configuration)                                   |
+| golang                  | object   | [GoLang configuration](#golang-configuration)                                   |
+| nginx                   | object   | [Nginx configuration](#nginx-configuration)                                     |
+| memcached               | object   | [Memcached configuration](#memcached-configuration)                             |
+| redis                   | object   | [Redis configuration](#redis-configuration)                                     |
+| import_hosts_files      | []object | [Import hosts configuration](#import-hosts-configuration)                       |
+| extra_ansible_playbooks | object   | [Extra Ansible Playbooks configuration](#extra-ansible-playbooks-configuration) |
 
 ### PHP configuration
 
@@ -231,27 +231,35 @@ Each imported block is started with a line `##>>> INSERTED BY GEARBOX ## <block_
 and is ended with a line `##<<< INSERTED BY GEARBOX ## <block_name> ## END   <<<##`.
 `<block_name>` is defined in the `name` property, which used to distinguish different imported files.
 
-### Extra Ansible Task configuration
+### Extra Ansible Playbooks configuration
 
-`extra_ansible_tasks` setup extra ansible task files and a variable file to run after the main installation tasks.
+`extra_ansible_playbooks` setup extra ansible playbook files and variable files to run after the main installation tasks.
 
-| Variable Name  | Type     | Description                                                                                  | Default |
-|----------------|----------|----------------------------------------------------------------------------------------------|---------|
-| task_files     | []string | An array of file paths that contain Ansible Tasks                                            | `true`  |
-| variable_files | []string | An array of file paths that contains variables using in Ansible Tasks (format: JSON or YAML) | `true`  |
+| Variable Name  | Type     | Description                                                                                      | Default |
+|----------------|----------|--------------------------------------------------------------------------------------------------|---------|
+| playbook_files | []string | An array of file paths that contains Ansible Playbooks                                           | `[]`    |
+| variable_files | []string | An array of file paths that contains variables using in Ansible Playbooks (format: JSON or YAML) | `[]`    |
 
 - In Linux, file path with the form `/path/to/file.yaml`
 - In Windows, file path with the form `C:\\path\\to\\file.yaml`, or with WSL file path (e.g. `/mnt/c/path/to/file.yaml`)
 
-Example task file (e.g. `/path/to/task.yaml`):
+Example playbook file (e.g. `/path/to/playbook.yaml`):
 
 ```yaml
+---
 - name: Debug example
-  debug:
-    msg: "Ansible debug example"
-- name: Debug example with variable "foobar"
-  debug:
-    msg: '{{ foobar }}'
+  hosts: localhost
+  become: true
+  vars:
+    foo: 'foo'
+    bar: '{{ foobar }}'
+  tasks:
+    - name: Debug example
+      debug:
+        msg: "Ansible debug example {{ foo }}"
+    - name: Debug example with variable "bar"
+      debug:
+        msg: '{{ bar }}'
 ```
 
 Example variable file with JSON format (e.g. `/path/to/variables.json`):
