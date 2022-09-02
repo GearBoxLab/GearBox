@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+## v0.5.1
+
+- Only download gearbox binary with newer version
+- Fix `gearbox-service` script by adding missing "sudo" command
+
 ## v0.5.0
 
 - Fix bug that "install-gearbox-windows.bat" stopped after calling `RefreshEnv.cmd`
