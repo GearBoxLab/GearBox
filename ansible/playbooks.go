@@ -5,7 +5,6 @@ import (
 	"crypto/md5"
 	"embed"
 	"errors"
-	"fmt"
 	"html/template"
 	"io/fs"
 	"os"
@@ -138,9 +137,6 @@ func installPlaybookMainFile(playbookName, installDir string, conf *configuratio
 	var targetFS *os.File
 	targetPath := filepath.Join(installDir, "playbooks", playbookName, "main.yml")
 	result = &InstallResult{"", ""}
-
-	x, _ := playbooks.ReadFile("playbooks/main.yml.gotmpl")
-	fmt.Printf("template: %s\n", x)
 
 	if tmpl, err = template.ParseFS(playbooks, "playbooks/main.yml.gotmpl"); nil != err {
 		return result, err
