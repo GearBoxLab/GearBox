@@ -29,6 +29,7 @@ var installCommand = &console.Command{
 			Default:     getDefaultDistribution(),
 		},
 	},
+	Flags: installCommandFlags,
 	Usage: "Install packages with Ansible script.",
 	Action: func(c *console.Context) (err error) {
 		var distribution = c.Args().Get("distribution")
@@ -54,8 +55,11 @@ var installCommand = &console.Command{
 			return err
 		}
 
-		if sudoPassword, err = readSudoPassword(); nil != err {
-			return err
+		sudoPassword = c.String("sudo-password")
+		if 0 == len(sudoPassword) {
+			if sudoPassword, err = readSudoPassword(); nil != err {
+				return err
+			}
 		}
 
 		ansibleInstaller := ansible.NewInstaller(WSL)
@@ -90,7 +94,7 @@ var installCommand = &console.Command{
 
 		showInstallPackages(conf)
 
-		if true == terminal.AskConfirmation("Start to install?", false) {
+		if c.Bool("yes") || true == terminal.AskConfirmation("Start to install?", false) {
 			terminal.Print("\n")
 
 			if err = ansibleInstaller.RunAnsiblePlaybook(playbookMainFilePath, configurationFilePath, wslExtraVarFilePath, sudoPassword, conf); nil != err {

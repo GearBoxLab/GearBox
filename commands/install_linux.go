@@ -3,17 +3,19 @@
 package commands
 
 import (
-	"LeoOnTheEarth/GearBox/ansible"
-	"LeoOnTheEarth/GearBox/configuration"
-	"LeoOnTheEarth/GearBox/process"
 	"errors"
 	"fmt"
-	"github.com/symfony-cli/console"
-	"github.com/symfony-cli/terminal"
 	"os"
 	"os/exec"
 	"regexp"
 	"strings"
+
+	"LeoOnTheEarth/GearBox/ansible"
+	"LeoOnTheEarth/GearBox/configuration"
+	"LeoOnTheEarth/GearBox/process"
+
+	"github.com/symfony-cli/console"
+	"github.com/symfony-cli/terminal"
 )
 
 var supportedLinuxDistributions = []string{
@@ -22,6 +24,7 @@ var supportedLinuxDistributions = []string{
 
 var installCommand = &console.Command{
 	Name:  "install",
+	Flags: installCommandFlags,
 	Usage: "Install packages with Ansible script.",
 	Action: func(c *console.Context) (err error) {
 		if isWsl() {
@@ -51,13 +54,16 @@ var installCommand = &console.Command{
 			return err
 		}
 
-		if sudoPassword, err = readSudoPassword(); nil != err {
-			return err
+		sudoPassword = c.String("sudo-password")
+		if 0 == len(sudoPassword) {
+			if sudoPassword, err = readSudoPassword(); nil != err {
+				return err
+			}
 		}
 
 		ansibleInstaller := ansible.NewInstaller(processFactory)
 
-		if err = ansibleInstaller.Install(playbookName, sudoPassword, conf); nil == err {
+		if err = ansibleInstaller.Install(playbookName, sudoPassword, conf); nil != err {
 			return err
 		}
 
@@ -79,7 +85,7 @@ var installCommand = &console.Command{
 
 		showInstallPackages(conf)
 
-		if true == terminal.AskConfirmation("Start to install?", false) {
+		if c.Bool("yes") || true == terminal.AskConfirmation("Start to install?", false) {
 			terminal.Print("\n")
 
 			if err = ansibleInstaller.RunAnsiblePlaybook(playbookMainFilePath, configurationFilePath, extraVarFilePath, sudoPassword, conf); nil != err {

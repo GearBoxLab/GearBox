@@ -3,8 +3,14 @@ package commands
 import (
 	"LeoOnTheEarth/GearBox/configuration"
 
+	"github.com/symfony-cli/console"
 	"github.com/symfony-cli/terminal"
 )
+
+var installCommandFlags = []console.Flag{
+	&console.StringFlag{Name: "sudo-password", Required: false, Usage: "Give the sudo password and run non-interactively."},
+	&console.BoolFlag{Name: "yes", Required: false, Usage: `Automatic yes to prompts. Assume "yes" as answer to all prompts and run non-interactively.`},
+}
 
 func showInstallPackages(conf *configuration.Configuration) {
 	terminal.Print("Install packages:\n")
