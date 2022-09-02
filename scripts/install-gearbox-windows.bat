@@ -17,4 +17,9 @@ bitsadmin.exe /transfer "Download chocolatey's RefreshEnv.cmd" https://raw.githu
 
 ECHO.
 
-%REFRESHENV_PATH% && DEL /Q %REFRESHENV_PATH% && ECHO. && %USERPROFILE%\.gearbox\bin\gearbox.exe help
+CALL %REFRESHENV_PATH%
+DEL /Q %REFRESHENV_PATH%
+
+ECHO.
+
+%USERPROFILE%\.gearbox\bin\gearbox.exe help
