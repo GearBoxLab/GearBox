@@ -24,7 +24,7 @@ run_one_service () {
   echo "--------------------------------------------------------------------------------"
   echo "$ service ${service} ${action}"
   echo
-  service ${service} ${action}
+  sudo service ${service} ${action}
 
   if [[ ${action} != "status" ]]
   then
