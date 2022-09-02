@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+## v0.5.0
+
+- Fix bug that "install-gearbox-windows.bat" stopped after calling `RefreshEnv.cmd`
+- Remove debug codes
+- Add new options `--sudo-password` and `--yes` to command `gearbox install`
+
 ## v0.4.0
 
 - Change config "extra_ansible_tasks" to "extra_ansible_playbooks"
