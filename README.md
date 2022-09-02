@@ -52,7 +52,7 @@ GearBox helps to easily create the same web development environment in Windows(W
 Run the following command in your terminal to install/update GearBox files.
 
 ```bash
-bitsadmin.exe /transfer "Download GearBox" https://raw.githubusercontent.com/GearBoxLab/GearBox/master/scripts/install-gearbox-windows.bat %TEMP%\install-gearbox-windows.bat && CALL %TEMP%\install-gearbox-windows.bat && DEL /Q %TEMP%\install-gearbox-windows.bat 
+bitsadmin.exe /transfer "Download GearBox Installer" https://raw.githubusercontent.com/GearBoxLab/GearBox/master/scripts/install-gearbox-windows.bat %TEMP%\install-gearbox-windows.bat && CALL %TEMP%\install-gearbox-windows.bat && DEL /Q %TEMP%\install-gearbox-windows.bat 
 ```
 
 ## Install/Update GearBox in Linux
