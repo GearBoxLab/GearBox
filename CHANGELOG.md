@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+## v0.6.0
+
+- Update installer in Windows
+- Add a new option `--only-run-extra-ansible-playbooks` to command `gearbox install`
+
 ## v0.5.1
 
 - Only download gearbox binary with newer version
