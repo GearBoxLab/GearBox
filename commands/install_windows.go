@@ -95,7 +95,9 @@ var installCommand = &console.Command{
 			return err
 		}
 
-		showInstallPackages(conf)
+		if !c.Bool("only-run-extra-ansible-playbooks") {
+			showInstallPackages(conf)
+		}
 
 		if c.Bool("yes") || true == terminal.AskConfirmation("Start to install?", false) {
 			terminal.Print("\n")
