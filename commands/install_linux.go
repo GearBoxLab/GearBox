@@ -53,6 +53,9 @@ var installCommand = &console.Command{
 		if conf, err = configuration.Load(); nil != err {
 			return err
 		}
+		if c.Bool("only-run-extra-ansible-playbooks") {
+			conf.OnlyRunExtraAnsiblePlaybooks = true
+		}
 
 		sudoPassword = c.String("sudo-password")
 		if 0 == len(sudoPassword) {

@@ -10,6 +10,7 @@ import (
 var installCommandFlags = []console.Flag{
 	&console.StringFlag{Name: "sudo-password", Required: false, Usage: "Give the sudo password and run non-interactively."},
 	&console.BoolFlag{Name: "yes", Required: false, Usage: `Automatic yes to prompts. Assume "yes" as answer to all prompts and run non-interactively.`},
+	&console.BoolFlag{Name: "only-run-extra-ansible-playbooks", Required: false, Usage: `Only run extra Ansible Playbooks.`},
 }
 
 func showInstallPackages(conf *configuration.Configuration) {

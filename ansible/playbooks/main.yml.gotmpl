@@ -1,4 +1,5 @@
 ---
+{{ if not .OnlyRunExtraAnsiblePlaybooks }}
 - import_playbook: '01-common.yml'
 - import_playbook: '11-php.yml'
   when: 'php.install == true'
@@ -13,7 +14,10 @@
 - import_playbook: '16-golang.yml'
   when: 'golang.install == true'
 - import_playbook: '20-services.yml'
+{{ end }}
 {{ range $key, $file := .ExtraAnsiblePlaybooks.PlaybookFiles -}}
 - import_playbook: '{{ $file }}'
 {{- end }}
+{{ if not .OnlyRunExtraAnsiblePlaybooks }}
 - import_playbook: '99-finish.yml'
+{{ end }}

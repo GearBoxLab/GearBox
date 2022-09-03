@@ -12,15 +12,16 @@ const FileName = "config.json"
 const ExtraVarsFileName = "extra-vars.json"
 
 type Configuration struct {
-	PHP                   confPHP                   `json:"php"`
-	Blackfire             confBlackfire             `json:"blackfire"`
-	NodeJS                confNodeJS                `json:"nodejs"`
-	GoLang                confGoLang                `json:"golang"`
-	Nginx                 confNginx                 `json:"nginx"`
-	Memcached             confMemcached             `json:"memcached"`
-	Redis                 confRedis                 `json:"redis"`
-	ImportHostsFiles      []confImportHostFile      `json:"import_hosts_files"`
-	ExtraAnsiblePlaybooks confExtraAnsiblePlaybooks `json:"extra_ansible_playbooks"`
+	PHP                          confPHP                   `json:"php"`
+	Blackfire                    confBlackfire             `json:"blackfire"`
+	NodeJS                       confNodeJS                `json:"nodejs"`
+	GoLang                       confGoLang                `json:"golang"`
+	Nginx                        confNginx                 `json:"nginx"`
+	Memcached                    confMemcached             `json:"memcached"`
+	Redis                        confRedis                 `json:"redis"`
+	ImportHostsFiles             []confImportHostFile      `json:"import_hosts_files"`
+	ExtraAnsiblePlaybooks        confExtraAnsiblePlaybooks `json:"extra_ansible_playbooks"`
+	OnlyRunExtraAnsiblePlaybooks bool
 }
 
 type confPHP struct {
@@ -128,6 +129,7 @@ func New() *Configuration {
 			PlaybookFiles: []string{},
 			VariableFiles: []string{},
 		},
+		OnlyRunExtraAnsiblePlaybooks: false,
 	}
 }
 
