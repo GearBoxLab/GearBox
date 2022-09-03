@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.6.1
+
+- Do not list install packages with "--only-run-extra-ansible-playbooks" option
+
 ## v0.6.0
 
 - Update installer in Windows
