@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.7.0
+
+- Add `extra_service_names` configuration
+
 ## v0.6.1
 
 - Do not list install packages with "--only-run-extra-ansible-playbooks" option
