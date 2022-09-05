@@ -21,6 +21,7 @@ type Configuration struct {
 	Redis                        confRedis                 `json:"redis"`
 	ImportHostsFiles             []confImportHostFile      `json:"import_hosts_files"`
 	ExtraAnsiblePlaybooks        confExtraAnsiblePlaybooks `json:"extra_ansible_playbooks"`
+	ExtraServiceNames            []string                  `json:"extra_service_names"`
 	onlyRunExtraAnsiblePlaybooks bool
 }
 
@@ -129,6 +130,7 @@ func New() *Configuration {
 			PlaybookFiles: []string{},
 			VariableFiles: []string{},
 		},
+		ExtraServiceNames:            []string{},
 		onlyRunExtraAnsiblePlaybooks: false,
 	}
 }
@@ -219,6 +221,10 @@ func GetServiceNames(playbookName string) []string {
 			if conf.Redis.Install {
 				names = append(names, "redis-server")
 			}
+		}
+
+		for _, name := range conf.ExtraServiceNames {
+			names = append(names, name)
 		}
 	}
 

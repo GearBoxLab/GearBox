@@ -113,7 +113,8 @@ Default configuration as below:
   "extra_ansible_tasks": {
     "task_files": [],
     "variable_file": []
-  }
+  },
+  "extra_service_names": []
 }
 ```
 
@@ -130,6 +131,7 @@ Default configuration as below:
 | redis                   | object   | [Redis configuration](#redis-configuration)                                     |
 | import_hosts_files      | []object | [Import hosts configuration](#import-hosts-configuration)                       |
 | extra_ansible_playbooks | object   | [Extra Ansible Playbooks configuration](#extra-ansible-playbooks-configuration) |
+| extra_service_names     | []string | [Extra service names configuration](#extra-service-names-configuration)         |
 
 ### PHP configuration
 
@@ -282,3 +284,9 @@ list:
   - "bar"
   - "foobar"
 ```
+
+## Extra service names configuration
+
+Add extra service names to `gearbox-service` command.
+
+For example: `{"extra_service_names": ["cron", "ssh"]}`, then you can use commands: `gearbox-service cron restart` or `gearbox-service ssh restart`.
