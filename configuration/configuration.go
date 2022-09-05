@@ -21,7 +21,7 @@ type Configuration struct {
 	Redis                        confRedis                 `json:"redis"`
 	ImportHostsFiles             []confImportHostFile      `json:"import_hosts_files"`
 	ExtraAnsiblePlaybooks        confExtraAnsiblePlaybooks `json:"extra_ansible_playbooks"`
-	OnlyRunExtraAnsiblePlaybooks bool
+	onlyRunExtraAnsiblePlaybooks bool
 }
 
 type confPHP struct {
@@ -129,8 +129,16 @@ func New() *Configuration {
 			PlaybookFiles: []string{},
 			VariableFiles: []string{},
 		},
-		OnlyRunExtraAnsiblePlaybooks: false,
+		onlyRunExtraAnsiblePlaybooks: false,
 	}
+}
+
+func (c *Configuration) SetOnlyRunExtraAnsiblePlaybooks(value bool) {
+	c.onlyRunExtraAnsiblePlaybooks = value
+}
+
+func (c *Configuration) OnlyRunExtraAnsiblePlaybooks() bool {
+	return c.onlyRunExtraAnsiblePlaybooks
 }
 
 // Load loads configuration from config.json file.
