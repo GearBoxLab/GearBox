@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.8.2
+
+- Fix `import-hosts` command success messages
+
 ## v0.8.1
 
 - Fix typo
