@@ -43,9 +43,9 @@ type confBlackfire struct {
 }
 
 type confNodeJS struct {
-	Install     bool   `json:"install"`
-	Version     string `json:"version"`
-	InstallYarn bool   `json:"install_yarn"`
+	Install    bool   `json:"install"`
+	Version    string `json:"version"`
+	NvmVersion string `json:"nvm_version"`
 }
 
 type confGoLang struct {
@@ -105,9 +105,9 @@ func New() *Configuration {
 			EnableService: true,
 		},
 		NodeJS: confNodeJS{
-			Install:     true,
-			Version:     "18",
-			InstallYarn: true,
+			Install:    true,
+			Version:    "18",
+			NvmVersion: "0.39.1",
 		},
 		GoLang: confGoLang{
 			Install: false,

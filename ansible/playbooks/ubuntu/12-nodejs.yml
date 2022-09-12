@@ -1,22 +1,15 @@
-- name: Install Node.js
+- name: Install nvm
   hosts: localhost
-  become: true
   vars:
-    version: '{{ nodejs.version|default(18) }}'
-    install_yarn: '{{ nodejs.install_yarn|default(true) }}'
+    version: '{{ nodejs.version|default("18") }}'
+    nvm_version: '{{ nodejs.nvm_version|default("0.39.1") }}'
   tasks:
-    - name: Add NodeJS repository
-      shell: 'curl -fsSL https://deb.nodesource.com/setup_{{ version }}.x | bash -'
-      changed_when: false
+    - name: 'Install nvm {{ nvm_version }}'
+      shell: 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh | bash'
       args:
-        warn: false
+        creates: /home/{{ ansible_user_id }}/.nvm/nvm.sh
 
-    - name: Install NodeJS
-      apt:
-        name: nodejs
-        state: latest
-
-    - name: Install Yarn
-      apt:
-        name: yarn
-        state: latest
+    - name: 'Install NodeJS {{ ersion }}'
+      shell: '/bin/bash -c "source ~/.nvm/nvm.sh && nvm install {{ version }}"'
+      args:
+        creates: /home/{{ ansible_user_id }}/.nvm/alias
