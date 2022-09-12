@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+## v0.8.0
+
+- Fix Windows installer bugs when comparing GearBox versions
+- Replace NodeJS installation with `nvm`
+
 ## v0.7.0
 
 - Add `extra_service_names` configuration
