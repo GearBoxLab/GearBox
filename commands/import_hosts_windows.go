@@ -38,8 +38,6 @@ var importHostsCommand = &console.Command{
 			if writeErr := os.WriteFile(messageFilePath, message, 0644); nil != writeErr {
 				return writeErr
 			}
-
-			return err
 		}
 
 		spent := 0
