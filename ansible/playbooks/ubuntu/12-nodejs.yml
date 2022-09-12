@@ -4,12 +4,12 @@
     version: '{{ nodejs.version|default("18") }}'
     nvm_version: '{{ nodejs.nvm_version|default("0.39.1") }}'
   tasks:
-    - name: 'Install nvm {{ nvm_version }}'
+    - name: 'Install nvm v{{ nvm_version }}'
       shell: 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh | bash'
       args:
         creates: /home/{{ ansible_user_id }}/.nvm/nvm.sh
 
-    - name: 'Install NodeJS {{ ersion }}'
+    - name: 'Install NodeJS v{{ version }}'
       shell: '/bin/bash -c "source ~/.nvm/nvm.sh && nvm install {{ version }}"'
       args:
         creates: /home/{{ ansible_user_id }}/.nvm/alias
