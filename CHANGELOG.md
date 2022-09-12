@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.8.1
+
+- Fix typo
+
 ## v0.8.0
 
 - Fix Windows installer bugs when comparing GearBox versions
