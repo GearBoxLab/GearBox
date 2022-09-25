@@ -99,6 +99,7 @@ Default configuration as below:
   },
   "nginx": {
     "install": true,
+    "compile_version": "",
     "enable_service": true
   },
   "memcached": {
@@ -171,10 +172,18 @@ Default configuration as below:
 
 ### Nginx configuration
 
-| Variable Name  | Type | Description             | Default |
-|----------------|------|-------------------------|---------|
-| install        | bool | Install Nginx or not    | `true`  |
-| enable_service | bool | Enable Nginx at startup | `true`  |
+| Variable Name   | Type   | Description                                                                         | Default |
+|-----------------|--------|-------------------------------------------------------------------------------------|---------|
+| install         | bool   | Install Nginx or not                                                                | `true`  |
+| compile_version | string | Set a specific version number to compile Nginx from source, e.g. `1.16.1`, `1.18.0` | `""`    |
+| enable_service  | bool   | Enable Nginx at startup                                                             | `true`  |
+
+GearBox will install Nginx from package manager (e.g. `apt`) by default, and install the latest version of Nginx.
+If you want to use a specific Nginx version, set up with `compile_version` variable.
+And GearBox will install specific Nginx version that compiled from source code.
+
+- Valid `compile_version` values can be found at [https://nginx.org/en/download.html](https://nginx.org/en/download.html).
+- The recommended `compile_version` value in WSL is `1.16.1`.
 
 ### Memcached configuration
 
