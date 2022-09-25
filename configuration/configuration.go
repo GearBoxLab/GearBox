@@ -54,8 +54,9 @@ type confGoLang struct {
 }
 
 type confNginx struct {
-	Install       bool `json:"install"`
-	EnableService bool `json:"enable_service"`
+	Install        bool   `json:"install"`
+	CompileVersion string `json:"compile_version"`
+	EnableService  bool   `json:"enable_service"`
 }
 
 type confMemcached struct {
@@ -114,8 +115,9 @@ func New() *Configuration {
 			Version: "1.19",
 		},
 		Nginx: confNginx{
-			Install:       true,
-			EnableService: true,
+			Install:        true,
+			CompileVersion: "",
+			EnableService:  true,
 		},
 		Memcached: confMemcached{
 			Install:       true,

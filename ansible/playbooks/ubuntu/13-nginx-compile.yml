@@ -1,0 +1,113 @@
+---
+- name: Install Nginx Server from source
+  hosts: localhost
+  become: yes
+  vars:
+    nginx_version: 'nginx-{{ nginx.compile_version }}'
+    nginx_source_url: 'https://nginx.org/download/{{ nginx_version }}.tar.gz'
+    nginx_download_dir: '/usr/local/src/nginx'
+    nginx_source_dir: '{{ nginx_download_dir }}/{{ nginx_version }}'
+  tasks:
+    - name: Remove Nginx Server that installed by APT command
+      apt:
+        name: nginx
+        state: absent
+
+    - name: 'Add "nginx" group'
+      group:
+        name: nginx
+        system: yes
+
+    - name: 'Add "nginx" user'
+      user:
+        name: nginx
+        create_home: no
+        system: yes
+        group: nginx
+
+    - name: Install Nginx Dependencies
+      apt:
+        name:
+          - gcc
+          - make
+          - libssl-dev
+          - zlib1g-dev
+          - libpcre3
+          - libpcre3-dev
+          - unzip
+        update_cache: yes
+
+    - name: Create Nginx download directory
+      file:
+        path: '{{ nginx_download_dir }}'
+        state: directory
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: Download Nginx source files
+      get_url:
+        url: '{{ nginx_source_url }}'
+        dest: '{{ nginx_source_dir }}.tar.gz'
+      register: nginx_source
+
+    - name: Unpack Nginx source files
+      unarchive:
+        copy: no
+        dest: '{{ nginx_download_dir }}'
+        src: '{{ nginx_source.dest }}'
+        owner: root
+        group: root
+      when: nginx_source.changed
+      register: nginx_source_unpacked
+
+    - name: Remove old configurations
+      file:
+        path: /etc/nginx
+        state: absent
+      when: nginx_source_unpacked.changed
+
+    - name: Creating required Nginx directory
+      file:
+        path: '{{ item }}'
+        state: directory
+        mode: 0755
+        owner: root
+        group: root
+      loop:
+        - /etc/nginx/conf.d
+        - /var/cache/nginx
+
+    - name: Compiling Nginx source files
+      command: '{{ playbook_dir }}/scripts/compile-nginx.sh {{ nginx_source_dir }}'
+      register: result
+      changed_when: 'result.rc != 0'
+      failed_when: 'result.rc != 0'
+      when: nginx_source_unpacked.changed
+
+    - name: Modify nginx.conf
+      lineinfile:
+        path: /etc/nginx/nginx.conf
+        search_string: 'include /etc/nginx/conf.d/\*\.conf;'
+        insertbefore: '# HTTPS server'
+        line: '    include /etc/nginx/conf.d/*.conf;'
+
+
+- name: Enable Nginx service
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Installing Nginx init script (service)
+      copy:
+        src: 'scripts/etc/init.d/nginx'
+        dest: /etc/init.d/nginx
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Enable Nginx service
+      ansible.builtin.service:
+        name: nginx
+        enabled: yes
+        state: started
+      when: 'wsl == false and nginx.enable_service == true'

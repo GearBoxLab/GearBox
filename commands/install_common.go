@@ -39,7 +39,11 @@ func showInstallPackages(conf *configuration.Configuration) {
 	}
 
 	if conf.Nginx.Install {
-		terminal.Print("  - Nginx Server\n")
+		if conf.Nginx.CompileVersion != "" {
+			terminal.Printf("  - Nginx Server v%s (Compile from source)\n", conf.Nginx.CompileVersion)
+		} else {
+			terminal.Print("  - Nginx Server\n")
+		}
 	}
 
 	if conf.Memcached.Install {
