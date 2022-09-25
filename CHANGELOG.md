@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+## v0.9.0
+
+- Add tasks to compile Nginx from source
+- Improve Windows UAC process
+
 ## v0.8.2
 
 - Fix `import-hosts` command success messages
