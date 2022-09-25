@@ -3,21 +3,91 @@
 package uac
 
 import (
+	"errors"
 	"golang.org/x/sys/windows"
 	"os"
 	"os/exec"
 	"strings"
 	"syscall"
+	"time"
 )
 
 // Prompt triggers Windows UAC elevation prompt.
-func Prompt() error {
-	return PromptWithExtraArguments([]string{})
+func Prompt(messageFilePath string, maxWaitTime time.Duration, job func() error) error {
+	return PromptWithExtraArguments(messageFilePath, maxWaitTime, []string{}, job)
 }
 
 // PromptWithExtraArguments triggers Windows UAC elevation prompt.
 // The extraArguments will append to the original command arguments.
-func PromptWithExtraArguments(extraArguments []string) error {
+func PromptWithExtraArguments(messageFilePath string, maxWaitTime time.Duration, extraArguments []string, job func() error) error {
+	os.Remove(messageFilePath)
+
+	if IsAdmin() {
+		err := job()
+		message := []byte("")
+
+		if nil != err {
+			message = []byte(err.Error())
+		}
+
+		if writeErr := os.WriteFile(messageFilePath, message, 0644); nil != writeErr {
+			return writeErr
+		}
+
+		return err
+	}
+
+	if err := doPrompt(extraArguments); nil != err {
+		return err
+	}
+
+	spent := 0 * time.Millisecond
+	step := 100 * time.Millisecond
+
+	for true {
+		time.Sleep(step)
+		spent += step
+
+		if _, err := os.Stat(messageFilePath); errors.Is(err, os.ErrNotExist) {
+			if spent >= maxWaitTime {
+				break
+			}
+		} else {
+			time.Sleep(step)
+
+			if message, readErr := os.ReadFile(messageFilePath); nil != readErr {
+				return readErr
+			} else if len(message) > 0 {
+				err = errors.New(string(message))
+			}
+
+			if removeErr := os.Remove(messageFilePath); nil != removeErr {
+				return removeErr
+			}
+
+			if nil != err {
+				return err
+			}
+
+			break
+		}
+	}
+
+	return nil
+}
+
+func IsAdmin() bool {
+	systemRoot := os.Getenv("SYSTEMROOT")
+	cmd := exec.Command(systemRoot+`\system32\cacls.exe`, systemRoot+`\system32\config\system`)
+
+	if err := cmd.Run(); nil != err {
+		return false
+	}
+
+	return true
+}
+
+func doPrompt(extraArguments []string) error {
 	verb := "runas"
 	exe, _ := os.Executable()
 	cwd, _ := os.Getwd()
@@ -31,15 +101,4 @@ func PromptWithExtraArguments(extraArguments []string) error {
 	var showCmd int32 = 1 // SW_NORMAL
 
 	return windows.ShellExecute(0, verbPtr, exePtr, argPtr, cwdPtr, showCmd)
-}
-
-func IsAdmin() bool {
-	systemRoot := os.Getenv("SYSTEMROOT")
-	cmd := exec.Command(systemRoot+`\system32\cacls.exe`, systemRoot+`\system32\config\system`)
-
-	if err := cmd.Run(); nil != err {
-		return false
-	}
-
-	return true
 }
