@@ -29,7 +29,7 @@ var importHostsCommand = &console.Command{
 			return err
 		})
 
-		if nil == err {
+		if nil == err && !uac.IsAdmin() {
 			terminal.Print(terminal.FormatBlockMessage("success", `Import hosts successfully.`))
 		}
 
