@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.9.1
+
+- Fix printing duplicated success messages
+
 ## v0.9.0
 
 - Add tasks to compile Nginx from source
