@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.9.2
+
+- Fix Ansible tasks
+
 ## v0.9.1
 
 - Fix printing duplicated success messages
