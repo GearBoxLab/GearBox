@@ -88,7 +88,7 @@
     - name: Modify nginx.conf
       lineinfile:
         path: /etc/nginx/nginx.conf
-        search_string: 'include /etc/nginx/conf.d/\*\.conf;'
+        regexp: '^[ ]+include /etc/nginx/conf.d/\*\.conf;'
         insertbefore: '# HTTPS server'
         line: '    include /etc/nginx/conf.d/*.conf;'
 
