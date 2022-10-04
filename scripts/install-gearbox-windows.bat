@@ -24,7 +24,7 @@ IF EXIST "%USERPROFILE%\.gearbox\bin\gearbox.exe" (
 )
 
 IF %DOWNLOAD_GEARBOX% == 1 (
-  CALL bitsadmin.exe /transfer "Download gearbox.exe" %GEARBOX_DOWNLOAD_URL% %USERPROFILE%\.gearbox\bin\gearbox.exe
+  CALL bitsadmin.exe /transfer "Download gearbox.exe (%GEARBOX_LATEST_VERSION%)" %GEARBOX_DOWNLOAD_URL% %USERPROFILE%\.gearbox\bin\gearbox.exe
   CALL bitsadmin.exe /transfer "Download chocolatey's RefreshEnv.cmd" https://raw.githubusercontent.com/chocolatey/choco/f924d47fb4177a9a34ff0c2bf995938b5c12800b/src/chocolatey.resources/redirects/RefreshEnv.cmd %REFRESHENV_PATH%
 
   "%USERPROFILE%\.gearbox\bin\gearbox.exe" init
