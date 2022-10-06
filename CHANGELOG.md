@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.9.3
+
+- Fix bug in a Non-English language WSL environment
+
 ## v0.9.2
 
 - Fix Ansible tasks
