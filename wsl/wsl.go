@@ -67,8 +67,8 @@ func (w *WSL) ConvertToLinuxPath(windowsPath string) (path string, err error) {
 
 func GetDefaultDistribution() (distribution string, err error) {
 	var result []byte
-	cmd := exec.Command("wsl", "--status")
-	regex := regexp.MustCompile(`Default Distribution: (\S+)?`)
+	cmd := exec.Command("wsl", "--list", "--verbose")
+	regex := regexp.MustCompile(`^\* (\S+)\s+(Running|Stopped)\s+\d`)
 
 	if result, err = cmd.Output(); nil != err {
 		return "", err
@@ -88,7 +88,7 @@ func GetDefaultDistribution() (distribution string, err error) {
 
 func ValidateDistribution(distribution string) (isValid bool, err error) {
 	var result []byte
-	cmd := exec.Command("wsl", "-l")
+	cmd := exec.Command("wsl", "--list")
 
 	if result, err = cmd.Output(); nil != err {
 		return false, err
@@ -108,7 +108,7 @@ func ValidateDistribution(distribution string) (isValid bool, err error) {
 
 func GetValidDistributions() []string {
 	distributions := make([]string, 0)
-	cmd := exec.Command("wsl", "-l")
+	cmd := exec.Command("wsl", "--list")
 
 	if result, err := cmd.Output(); nil == err {
 		for _, line := range strings.Split(string(result), "\n") {
