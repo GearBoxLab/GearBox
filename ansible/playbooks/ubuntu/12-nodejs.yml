@@ -1,7 +1,8 @@
 - name: Install nvm
   hosts: localhost
   vars:
-    version: '{{ nodejs.version|default("lts") }}'
+    version: '{{ nodejs.version|default("lts")|lower }}'
+    version_text: "{% if 'lts' == version %}LTS{% else %}v{{ version }}{% endif %}"
     nvm_version: '{{ nodejs.nvm_version|default("0.39.1") }}'
   tasks:
     - name: 'Install nvm v{{ nvm_version }}'
@@ -9,7 +10,9 @@
       args:
         creates: /home/{{ ansible_user_id }}/.nvm/nvm.sh
 
-    - name: 'Install NodeJS v{{ version }}'
-      shell: '/bin/bash -c "source ~/.nvm/nvm.sh && nvm install {{ version }}"'
+    - name: 'Install NodeJS {{ version_text }}'
+      vars:
+        version_arg: "{% if 'lts' == version %}--lts{% else %}{{ version }}{% endif %}"
+      shell: '/bin/bash -c "source ~/.nvm/nvm.sh && nvm install {{ version_arg }}"'
       args:
         creates: /home/{{ ansible_user_id }}/.nvm/alias
