@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.9.4
+
+- Change default NodeJS version to "lts"
+
 ## v0.9.3
 
 - Fix bug in a Non-English language WSL environment
