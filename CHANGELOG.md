@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.9.6
+
+- Fix displaying NodeJS version name and install arguments
+
 ## v0.9.5
 
 - Fix displaying NodeJS version name
