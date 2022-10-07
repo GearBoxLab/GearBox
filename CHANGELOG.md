@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.9.5
+
+- Fix displaying NodeJS version name
+
 ## v0.9.4
 
 - Change default NodeJS version to "lts"
