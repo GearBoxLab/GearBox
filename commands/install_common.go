@@ -35,7 +35,11 @@ func showInstallPackages(conf *configuration.Configuration) {
 	}
 
 	if conf.NodeJS.Install {
-		terminal.Printf("  - NodeJS v%s\n", conf.NodeJS.Version)
+		if "lts" == conf.NodeJS.Version {
+			terminal.Println("  - NodeJS LTS")
+		} else {
+			terminal.Printf("  - NodeJS v%s\n", conf.NodeJS.Version)
+		}
 	}
 
 	if conf.Nginx.Install {
