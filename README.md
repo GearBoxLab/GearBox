@@ -24,7 +24,7 @@ GearBox helps to easily create the same web development environment in Windows(W
                  then run "php --version" will get "PHP 7.4.x"
        ```
    - Blackfire
-   - NodeJS (include Yarn)
+   - NodeJS (install with [nvm](https://github.com/nvm-sh/nvm))
    - GoLang
    - Nginx
    - Memcached
@@ -90,8 +90,8 @@ Default configuration as below:
   },
   "nodejs": {
     "install": true,
-    "version": "18",
-    "install_yarn": true
+    "version": "lts",
+    "nvm_version": "0.39.1"
   },
   "golang": {
     "install": false,
