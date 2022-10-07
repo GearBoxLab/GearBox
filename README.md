@@ -157,11 +157,14 @@ Default configuration as below:
 
 ### NodeJS configuration
 
-| Variable Name  | Type   | Description                     | Default |
-|----------------|--------|---------------------------------|---------|
-| install        | bool   | Install NodeJS or not           | `true`  |
-| version        | string | Setup NodeJS version to install | `"18"`  |
-| install_yarn   | bool   | Install `yarn` or not           | `true`  |
+| Variable Name  | Type   | Description                     | Default    |
+|----------------|--------|---------------------------------|------------|
+| install        | bool   | Install NodeJS or not           | `true`     |
+| version        | string | Setup NodeJS version to install | `"lts"`    |
+| nvm_version    | string | `nvm` version number            | `"0.39.1"` |
+
+GearBox use [`nvm`](https://github.com/nvm-sh/nvm) to install NodeJS.
+Valid `nvm` version numbers can be found at [https://github.com/nvm-sh/nvm/releases](https://github.com/nvm-sh/nvm/releases).
 
 ### Golang configuration
 

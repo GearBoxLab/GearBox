@@ -1,7 +1,7 @@
 - name: Install nvm
   hosts: localhost
   vars:
-    version: '{{ nodejs.version|default("18") }}'
+    version: '{{ nodejs.version|default("lts") }}'
     nvm_version: '{{ nodejs.nvm_version|default("0.39.1") }}'
   tasks:
     - name: 'Install nvm v{{ nvm_version }}'

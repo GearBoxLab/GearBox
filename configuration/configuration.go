@@ -107,7 +107,7 @@ func New() *Configuration {
 		},
 		NodeJS: confNodeJS{
 			Install:    true,
-			Version:    "18",
+			Version:    "lts",
 			NvmVersion: "0.39.1",
 		},
 		GoLang: confGoLang{
