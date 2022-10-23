@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.9.7
+
+- Update scripts that install Ansible
+
 ## v0.9.6
 
 - Fix displaying NodeJS version name and install arguments
