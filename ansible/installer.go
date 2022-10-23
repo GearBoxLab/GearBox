@@ -34,7 +34,8 @@ func (i *Installer) Install(playbookName, sudoPassword string, conf *configurati
 					"apt update",
 					"apt install software-properties-common -y",
 					"add-apt-repository --yes --update ppa:ansible/ansible",
-					"apt install ansible -y",
+					"DEBIAN_FRONTEND=noninteractive apt install ansible -y",
+					"apt upgrade -y",
 				}
 				for _, script := range scripts {
 					if err = i.runSudoBashCommand(sudoPassword, script); nil != err {
