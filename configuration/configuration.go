@@ -145,6 +145,17 @@ func (c *Configuration) OnlyRunExtraAnsiblePlaybooks() bool {
 	return c.onlyRunExtraAnsiblePlaybooks
 }
 
+func (c *Configuration) Normalize() {
+	phpVersions := make([]string, 0)
+	for _, version := range c.PHP.Versions {
+		if version != c.PHP.DefaultVersion {
+			phpVersions = append(phpVersions, version)
+		}
+	}
+	phpVersions = append(phpVersions, c.PHP.DefaultVersion)
+	c.PHP.Versions = phpVersions
+}
+
 // Load loads configuration from config.json file.
 func Load() (c *Configuration, err error) {
 	var content []byte
@@ -164,6 +175,8 @@ func Load() (c *Configuration, err error) {
 			return nil, err
 		}
 	}
+
+	c.Normalize()
 
 	if content, err = json.MarshalIndent(c, "", "  "); nil != err {
 		return nil, err
