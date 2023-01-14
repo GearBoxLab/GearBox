@@ -3,7 +3,7 @@
   hosts: localhost
   become: true
   vars:
-    support_php_versions: [ "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1" ]
+    support_php_versions: [ "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2" ]
   tasks:
     - name: Add phpvm command to switch PHP versions
       copy:
@@ -59,6 +59,7 @@
       '7.4': { name: 'sqlsrv',       dir: '/usr/lib/php/20190902' }
       '8.0': { name: 'sqlsrv',       dir: '/usr/lib/php/20200930' }
       '8.1': { name: 'sqlsrv',       dir: '/usr/lib/php/20210902' }
+      '8.2': { name: 'sqlsrv',       dir: '/usr/lib/php/20220829' }
   tasks:
     - name: 'Install Microsoft ODBC drivers and unixODBC development headers'
       apt:

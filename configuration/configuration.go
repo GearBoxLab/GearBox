@@ -92,8 +92,8 @@ func New() *Configuration {
 	return &Configuration{
 		PHP: confPHP{
 			Install:        true,
-			Versions:       []string{"8.1"},
-			DefaultVersion: "8.1",
+			Versions:       []string{"8.2"},
+			DefaultVersion: "8.2",
 			EnableService:  true,
 		},
 		Blackfire: confBlackfire{
@@ -108,11 +108,11 @@ func New() *Configuration {
 		NodeJS: confNodeJS{
 			Install:    true,
 			Version:    "lts",
-			NvmVersion: "0.39.1",
+			NvmVersion: "0.39.3",
 		},
 		GoLang: confGoLang{
 			Install: false,
-			Version: "1.19",
+			Version: "1.19.5",
 		},
 		Nginx: confNginx{
 			Install:        true,
