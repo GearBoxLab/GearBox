@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+## v0.10.0
+
+- Normalize configuration for PHP versions
+- Update packages to the newest versions
+
 ## v0.9.7
 
 - Update scripts that install Ansible
