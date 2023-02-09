@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.10.1
+
+- Show supported versions in "phpvm" command
+
 ## v0.10.0
 
 - Normalize configuration for PHP versions
