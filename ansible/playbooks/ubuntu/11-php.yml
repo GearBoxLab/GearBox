@@ -30,6 +30,9 @@
           esac
           
           echo Usage: phpvm use \<php-version\>
+          echo
+          echo 'Supported versions: {{ ', '.join(php.versions) }}'
+          echo
           echo 'Example1: phpvm use 5.6'
           echo '          then run "php --version" will get "PHP 5.6.x"'
           echo 'Example2: phpvm use 7.4'
