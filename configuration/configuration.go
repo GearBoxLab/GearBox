@@ -112,7 +112,7 @@ func New() *Configuration {
 		},
 		GoLang: confGoLang{
 			Install: false,
-			Version: "1.19.5",
+			Version: "1.19.7",
 		},
 		Nginx: confNginx{
 			Install:        true,

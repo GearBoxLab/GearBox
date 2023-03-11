@@ -3,7 +3,7 @@
   vars:
     version: '{{ nodejs.version|default("lts")|lower }}'
     version_text: "{% if 'lts' == version %}LTS{% else %}v{{ version }}{% endif %}"
-    nvm_version: '{{ nodejs.nvm_version|default("0.39.1") }}'
+    nvm_version: '{{ nodejs.nvm_version|default("0.39.3") }}'
   tasks:
     - name: 'Install nvm v{{ nvm_version }}'
       shell: 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh | bash'

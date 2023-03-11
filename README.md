@@ -14,10 +14,13 @@ GearBox helps to easily create the same web development environment in Windows(W
      - Ubuntu
 2. Install packages:
    - PHP
-     - Install multiple versions of PHP, v5.6 ~ v8.1
+     - Install multiple versions of PHP, v5.6 ~ v8.2
      - Provide a `phpvm` command to switch PHP versions. Usage:
        ```
        Usage: phpvm use <php-version>
+       
+       Supported versions: 5.6, 7.2, 7.4, 8.2
+       
        Example1: phpvm use 5.6
                  then run "php --version" will get "PHP 5.6.x"
        Example2: phpvm use 7.4
