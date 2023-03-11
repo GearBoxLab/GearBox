@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+## v0.11.0
+
+- Fix Nginx compile script
+- Update sqlsrv max version for PHP7.4
+- Add a new support WSL distribution "Ubuntu-22.04"
+
 ## v0.10.1
 
 - Show supported versions in "phpvm" command
