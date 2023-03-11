@@ -15,6 +15,7 @@ var playbookNames = map[string]string{
 	"Ubuntu":       "ubuntu",
 	"Ubuntu-18.04": "ubuntu",
 	"Ubuntu-20.04": "ubuntu",
+	"Ubuntu-22.04": "ubuntu",
 }
 
 type WSL struct {
