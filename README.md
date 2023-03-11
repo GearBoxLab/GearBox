@@ -10,6 +10,7 @@ GearBox helps to easily create the same web development environment in Windows(W
      - Ubuntu
      - Ubuntu-18.04
      - Ubuntu-20.04
+     - Ubuntu-22.04
    - Linux distributions:
      - Ubuntu
 2. Install packages:
