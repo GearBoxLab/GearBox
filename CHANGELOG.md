@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+## v0.11.1
+
+- Update installed package versions
+  - GoLang: 1.19.7
+  - nvm: 0.39.3
+  - PHP: 8.2
+
 ## v0.11.0
 
 - Fix Nginx compile script
