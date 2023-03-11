@@ -76,7 +76,9 @@
         group: root
       loop:
         - /etc/nginx/conf.d
+        - /usr/lib/nginx/modules
         - /var/cache/nginx
+        - /var/log/nginx
 
     - name: Compiling Nginx source files
       command: '{{ playbook_dir }}/scripts/compile-nginx.sh {{ nginx_source_dir }}'

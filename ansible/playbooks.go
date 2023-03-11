@@ -2,6 +2,7 @@ package ansible
 
 import (
 	"LeoOnTheEarth/GearBox/configuration"
+	"bytes"
 	"crypto/md5"
 	"embed"
 	"errors"
@@ -122,6 +123,8 @@ func installPlaybookFile(f *file, installDir string) (result *InstallResult, err
 	if content, err = playbooks.ReadFile(originalPath); nil != err {
 		return result, err
 	}
+
+	content = bytes.Replace(content, []byte{'\r', '\n'}, []byte{'\n'}, -1)
 
 	if err = os.WriteFile(targetPath, content, 0644); nil != err {
 		return result, err
