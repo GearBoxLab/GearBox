@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.11.3
+
+- Update composer install script (get checksum from remote URL)
+
 ## v0.11.2
 
 - Update composer install script
