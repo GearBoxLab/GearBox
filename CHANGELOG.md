@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.11.2
+
+- Update composer install script
+
 ## v0.11.1
 
 - Update installed package versions
