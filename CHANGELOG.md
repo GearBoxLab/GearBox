@@ -1,11 +1,15 @@
 CHANGELOG
 =========
 
+## v0.11.5
+
+- Update sqlsrv max version for PHP8.0
+
 ## v0.11.4
 
 - Update composer install script
   - Add command `composer22` (composer `v2.2.x`) for PHP < `7.2.5`
-  
+
 ## v0.11.3
 
 - Update composer install script (get checksum from remote URL)
