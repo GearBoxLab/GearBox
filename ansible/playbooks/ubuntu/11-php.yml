@@ -60,7 +60,7 @@
       '7.2': { name: 'sqlsrv-5.8.1',  dir: '/usr/lib/php/20170718' }
       '7.3': { name: 'sqlsrv-5.9.0',  dir: '/usr/lib/php/20180731' }
       '7.4': { name: 'sqlsrv-5.10.1', dir: '/usr/lib/php/20190902' }
-      '8.0': { name: 'sqlsrv',        dir: '/usr/lib/php/20200930' }
+      '8.0': { name: 'sqlsrv-5.11.1', dir: '/usr/lib/php/20200930' }
       '8.1': { name: 'sqlsrv',        dir: '/usr/lib/php/20210902' }
       '8.2': { name: 'sqlsrv',        dir: '/usr/lib/php/20220829' }
   tasks:
