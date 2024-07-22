@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+## v0.12.0
+
+- Add PHP sqlite3 support
+
 ## v0.11.5
 
 - Update sqlsrv max version for PHP8.0
